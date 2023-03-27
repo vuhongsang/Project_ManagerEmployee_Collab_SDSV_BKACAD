@@ -106,6 +106,30 @@ public class BaseDao {
             return false;
         }
     }
+    public boolean hasForEmail(String s) {
+        final String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if (s.isEmpty()) {
+            return false;
+        }
+        if (s.matches(regex)) {
+            // okay so exit loop
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean hasForDate(String s) {
+        final String regex = "(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/([0-9]{4})";
+        if (s.isEmpty()) {
+            return false;
+        }
+        if (s.matches(regex)) {
+            // okay so exit loop
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 

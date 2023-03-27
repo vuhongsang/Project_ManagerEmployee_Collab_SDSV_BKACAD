@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PROJECT_ManagerEmployee_Team6_Class1_SDSV" />
+        <module name="PROJECT_ManagerEmployee_SDSV_BKACAD" />
       </profile>
     </annotationProcessing>
   </component>

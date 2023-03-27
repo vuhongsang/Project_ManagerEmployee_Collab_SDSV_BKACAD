@@ -323,38 +323,36 @@ public class LeaveDao {
 
     public String inputLeaveStartSV() {
         String temp = null;
-        do {
+        while (true) {
+
             Scanner in = new Scanner(System.in);
-            System.out.printf("Input leave start (dd//MM//yyyy): ");
+            System.out.printf("Input leave start (dd/MM/yyyy): ");
             temp = in.next();
-            if (!baseDao.isValidFormat("dd//MM//yyyy", temp)) {
-                System.out.println("Input leave start fail, try again");
-                System.out.println("Input leave start like style : dd//MM//yyyy");
-                System.out.println("example : 09//11//1989");
-                System.out.println("---------------------------------------------------------");
-            } else {
+            if (baseDao.hasForDate(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("Input leave start fail, try again");
+            System.out.println("Input leave start like style : dd/MM/yyyy");
+            System.out.println("example : 09/11/1989");
+            System.out.println("---------------------------------------------------------");
+
+        }
     }
 
     public String inputLeaveEndSV() {
         String temp = null;
-        do {
+        while (true) {
             Scanner in = new Scanner(System.in);
-            System.out.printf("Input leave end (dd//MM//yyyy): ");
+            System.out.printf("Input leave end (dd/MM/yyyy): ");
             temp = in.next();
-            if (!baseDao.isValidFormat("dd//MM//yyyy", temp)) {
-                System.out.println("Input leave end fail, try again");
-                System.out.println("Input leave end like style : dd//MM//yyyy");
-                System.out.println("example : 09//11//1989");
-                System.out.println("---------------------------------------------------------");
-            } else {
+            if (baseDao.hasForDate(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("Input leave end fail, try again");
+            System.out.println("Input leave end like style : dd/MM/yyyy");
+            System.out.println("example : 09/11/1989");
+            System.out.println("---------------------------------------------------------");
+        }
     }
 
     public String inputEmployeeIDSV() {
@@ -548,5 +546,6 @@ public class LeaveDao {
             }
         } while (option!=0);
     }
+
 
 }

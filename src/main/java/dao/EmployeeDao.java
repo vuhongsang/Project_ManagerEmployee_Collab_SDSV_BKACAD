@@ -313,8 +313,6 @@ public class EmployeeDao {
     }
 
 
-
-
     //add new employee
     public void createEmployeeDB(Employee emp) {
         if (getByEmployeeEmailDB(emp.getEmail()) != null) {
@@ -426,6 +424,7 @@ public class EmployeeDao {
     //-----------------------SV-----------------------------------
 
     public void displayDetailsEmployeeSV(Employee e) {
+        System.out.println("------Result Message------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ");
         System.out.printf("%-4s %-15s %-15s %-10s %-15s %-25s %-20s %-15s %-10s %-7s %-7s\n", "ID", "FullName", "Position", "BOD", "Gender", "Email", "Phone", "HireDate", "EndDate", "FinanceID", "DepartID");
         System.out.printf("%-4d ", e.getEmp_id());
         String full_name = e.getFirst_name() + " " + e.getLast_name();
@@ -614,20 +613,18 @@ public class EmployeeDao {
 
     public String inputBODSV() {
         String temp = null;
-        do {
+        while (true) {
             Scanner in = new Scanner(System.in);
             System.out.printf("Input birth of day : ");
             temp = in.next();
-            if (!base.isValidFormat("dd//MM//yyyy", temp)) {
-                System.out.println("Input BOD fail, try again");
-                System.out.println("Input BOD like style : dd//MM//yyyy");
-                System.out.println("example : 09//11//1989");
-                System.out.println("---------------------------------------------------------");
-            } else {
+            if (base.hasForDate(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("Input BOD fail, try again");
+            System.out.println("Input BOD like style : dd/MM/yyyy");
+            System.out.println("example : 09/11/1989");
+            System.out.println("---------------------------------------------------------");
+        }
     }
 
     public long inputGenderSV() {
@@ -654,17 +651,18 @@ public class EmployeeDao {
 
     public String inputEmailSV() {
         String temp = null;
-        do {
+        while (true) {
             Scanner in = new Scanner(System.in);
-            System.out.printf("Input email : ");
+            System.out.printf("Input Email : ");
             temp = in.next();
-            if (temp.length() == 0) {
-                System.out.println("must input value, not null");
-            } else {
+            if (base.hasForEmail(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("Input email validate failure!!");
+            System.out.println("examples OK --> user.name@domain.com, user_name@domain.com, username@yahoo.corporate.in");
+            System.out.println("examples NG -->.username@yahoo.com, username@yahoo..com, @yahoo.com, name#1@yahoo.com");
+
+        }
     }
 
     public String inputPhoneNumbersSV() {
@@ -686,38 +684,34 @@ public class EmployeeDao {
 
     public String inputHireDateSV() {
         String temp = null;
-        do {
+        while (true) {
             Scanner in = new Scanner(System.in);
-            System.out.printf("Input hire date (dd//MM//yyyy): ");
+            System.out.printf("Input hire date (dd/MM/yyyy): ");
             temp = in.next();
-            if (!base.isValidFormat("dd//MM//yyyy", temp)) {
-                System.out.println("Input hire date fail, try again");
-                System.out.println("Input hire date like style : dd//MM//yyyy");
-                System.out.println("example : 09//11//1989");
-                System.out.println("---------------------------------------------------------");
-            } else {
+            if (base.hasForDate(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("------Warning Message------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("Input hire date fail, try again");
+            System.out.println("Input hire date like style : dd/MM/yyyy");
+            System.out.println("example : 09/11/1989");
+        }
     }
 
     public String inputEndDateSV() {
         String temp = null;
-        do {
+        while (true) {
             Scanner in = new Scanner(System.in);
-            System.out.printf("Input end date (dd//MM//yyyy): ");
+            System.out.printf("Input end date (dd/MM/yyyy): ");
             temp = in.next();
-            if (!base.isValidFormat("dd//MM//yyyy", temp)) {
-                System.out.println("Input end date fail, try again");
-                System.out.println("Input end date like style : dd//MM//yyyy");
-                System.out.println("example : 09//11//1989");
-                System.out.println("---------------------------------------------------------");
-            } else {
+            if (base.hasForDate(temp)) {
                 return temp;
             }
-        } while (temp != null);
-        return null;
+            System.out.println("------Warning Message-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("Input end date fail, try again");
+            System.out.println("Input end date like style : dd/MM/yyyy");
+            System.out.println("example : 09/11/1989");
+        }
     }
 
     public String inputDeptIDSV() {
@@ -829,7 +823,7 @@ public class EmployeeDao {
             }
             System.out.println("Fin ID not exist, input again");
         }
-        System.out.println("---Status Message-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("---Status Message----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         createEmployeeDB(emp);
         return emp;
     }
@@ -837,7 +831,7 @@ public class EmployeeDao {
     //delete employee & leaves
     public void deleteEmployeeSV() {
         // delete leave have foreign key emp_id
-        System.out.println("\n---|MANAGE EMPLOYEE|-->/DELETE EMPLOYEE/----------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("\n---|MANAGE EMPLOYEE|-->/DELETE EMPLOYEE/--------------------------------------------------------------------------------------------------------------------------------------------------------");
         boolean flag_EmpID = false;
         long tempEmpIDLx=-1;
         while (!flag_EmpID) {
@@ -847,7 +841,7 @@ public class EmployeeDao {
             if (tempEmpID != null && getByEmployeeIDDB(tempEmpIDL) != null && leaveDao.getLeaveByEmployeeIDDB(tempEmpIDL).size() != 0) {
                 /*System.out.println("exist emp id in leave list");*/
                 List<Leave> leaveList = leaveDao.getLeaveByEmployeeIDDB(tempEmpIDL);
-                System.out.println("--/LEAVES OF THIS EMPLOYEE ID/-------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("--/LEAVES OF THIS EMPLOYEE ID/-----------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.printf("%-20s %-20s %-20s %-20s %-10s \n", "Lev.ID", "Reason", "StartDate", "EndDate", "EmployeeID");
                 for (Leave lev : leaveList) {
                     leaveDao.displayDetailsLeave(lev);
@@ -876,7 +870,7 @@ public class EmployeeDao {
 
     ///update information of employee
     public void updateEmployeeSV() {
-        System.out.println("--/UPDATE EMPLOYEE INFORMATION/------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--/UPDATE EMPLOYEE INFORMATION/-----------------------------------------------------------------------------------------------------------------------------------------------------------------");
         Employee emp = new Employee();
         boolean flag_EmpID = false;
         while (!flag_EmpID) {
@@ -887,7 +881,7 @@ public class EmployeeDao {
                 flag_EmpID=true;
                 break;
             }
-            System.out.println("\n---------Suggest Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("\n---------Suggest Message------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Employee ID not exist, can use option[1] or [3] to improve and solve problem");
         }
         String tempFirstName = inputFirstNameSV();
@@ -925,7 +919,7 @@ public class EmployeeDao {
                 flag_Email = true;
                 break;
             }
-            System.out.println("\n---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("\n---------Warning Message-----------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Duplicate email, input different name email again");
         }
         boolean flag_EPhone = false;
@@ -944,7 +938,7 @@ public class EmployeeDao {
                 flag_EPhone = true;
                 break;
             }
-            System.out.println("\n---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("\n---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("duplicate employee phone, input again");
         }
         /*String tempPhone = inputPhoneNumbersSV();
@@ -968,7 +962,7 @@ public class EmployeeDao {
                 flag_Fin=true;
                 break;
             }
-            System.out.println("---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---------Warning Message-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Fin ID not exist, get finance ID information and input again");
             break;
         }
@@ -981,16 +975,16 @@ public class EmployeeDao {
                 flag_Dept=true;
                 break;
             }
-            System.out.println("---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---------Warning Message-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Dept ID not exist, input again");
             break;
         }
         if (flag_EmpID == true && flag_Fin == true && flag_Dept == true && flag_EPhone == true) {
-            System.out.println("\n---------Status Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("\n---------Status Message----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Input completely, update process is running >>");
             updateEmployeeDB(emp.getEmp_id(), emp);
         } else {
-            System.out.println("\n---------Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("\n---------Warning Message--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Update employee process is failure, maybe input incorrect, try again !");
         }
     }
@@ -1001,13 +995,13 @@ public class EmployeeDao {
         int option=-1;
         Scanner in = new Scanner(System.in);
         do {
-            System.out.println("SEARCH EMPLOYEE MENU-------------");
+            System.out.println("---/SEARCH EMPLOYEE MENU/----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("[1]--> Search employee by _ID");
             System.out.println("[2]--> Search employee by _Name");
             System.out.println("[3]--> Search employee by _Phone");
             System.out.println("[4]--> Search employee by _Email");
             System.out.println("[0]--> exit");
-            System.out.println("----------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.printf("Input Option: ");
             try {
                 option = Integer.parseInt(in.next());
@@ -1026,13 +1020,13 @@ public class EmployeeDao {
                         String tempCase1 = inputEmployeeIDSV();
                         long tempCase1L = Long.parseLong(tempCase1);
                         if (tempCase1 != null&&getByEmployeeIDDB(tempCase1L)!=null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             displayDetailsEmployeeSV(getByEmployeeIDDB(tempCase1L));
                             employee = getByEmployeeIDDB(tempCase1L);///
                             break;
                         }
                         if (tempCase1 != null&&getByEmployeeIDDB(tempCase1L)==null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             System.out.println("No exist employee with ID as above !!");
                             break;
                         }
@@ -1044,13 +1038,13 @@ public class EmployeeDao {
                         String tempCase2FN = inputFirstNameSV();
                         String tempCase2LN = inputLastNameSV();
                         if (tempCase2LN != null && tempCase2FN != null && getByEmployeeNameDB(tempCase2FN, tempCase2LN) != null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             displayDetailsEmployeeSV(getByEmployeeNameDB(tempCase2FN, tempCase2LN));
                             employee = getByEmployeeNameDB(tempCase2FN,tempCase2LN);
                             break;
                         }
                         if (tempCase2LN != null && tempCase2FN != null && getByEmployeeNameDB(tempCase2FN, tempCase2LN) == null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Warning message----------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             System.out.println("No exist employee with name as above !!");
                             break;
                         }
@@ -1059,14 +1053,16 @@ public class EmployeeDao {
                 case 3:
                     boolean flag_case3 = false;
                     while (!flag_case3) {
+                        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                         String tempCase3PN = inputPhoneNumbersSV();
                         Long tempCase3PNL = Long.parseLong(tempCase3PN);
                         if (tempCase3PN != null && tempCase3PNL != null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result-------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             if (getByEmployeePhoneDB(tempCase3PNL) == null) {
                                 System.out.println("No exist employee with phone number as above !!");
                                 break;
                             } else {
+                                System.out.println("------Search result----------------------------------------------------------------------------------------------------------------------------------------------------- ");
                                 displayDetailsEmployeeSV(getByEmployeePhoneDB(tempCase3PNL));
                                 break;
                             }
@@ -1079,13 +1075,13 @@ public class EmployeeDao {
                     while (!flag_case4) {
                         String tempCase4 = inputEmailSV();
                         if (tempCase4 != null&&getByEmployeeEmailDB(tempCase4)!=null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result---------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             displayDetailsEmployeeSV(getByEmployeeEmailDB(tempCase4));
                             employee = getByEmployeeEmailDB(tempCase4);
                             break;
                         }
                         if (tempCase4 != null&&getByEmployeeEmailDB(tempCase4)==null) {
-                            System.out.println("------Search result------------- ");
+                            System.out.println("------Search result----------------------------------------------------------------------------------------------------------------------------------------------------------- ");
                             System.out.println("No exist employee with above email !!");
                             break;
                         }
@@ -1098,7 +1094,7 @@ public class EmployeeDao {
 
     //add employee to department
     public void updateDeptForEmployeeSV() {
-        System.out.println("---|MANAGE DEPARTMENT MENU|-->/CHANGE DEPARTMENT FOR EMPLOYEE/-------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("---|MANAGE DEPARTMENT MENU|-->/CHANGE DEPARTMENT FOR EMPLOYEE/--------------------------------------------------------------------------------------------------------------------------------------");
         boolean flag_UDFEE = false; //flag for employee id
         boolean flag_UDFED =false;  //flag for department id
         long tempUDFE_EmpIDL=0;
@@ -1111,7 +1107,7 @@ public class EmployeeDao {
                     tempUDFE_EmpIDL = tempEmpIDL;
                     break;
                 }
-                System.out.println("---------Suggest Message-------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("---------Suggest Message---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("Employee ID not exist,can you select option [1] or [3] to solve problem");
                 break;
             }
@@ -1122,18 +1118,18 @@ public class EmployeeDao {
                     tempUDFE_DeptIDL = tempDeptIDL;
                     break;
                 }
-                System.out.println("---------Suggest Message-------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("---------Suggest Message---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("Department ID not exist, can you select option [1] or [3] to solve problem\n");
                 break;
             }
 
             if (tempUDFE_EmpIDL != 0 && tempUDFE_DeptIDL != 0) {
-                System.out.println("--//UPDATE DEPARTMENT FOR EMPLOYEE STATUS//---------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("--//UPDATE DEPARTMENT FOR EMPLOYEE STATUS//--------------------------------------------------------------------------------------------------------------------------------------------------");
                 updateDeptOfEmployeeDB(tempUDFE_EmpIDL, tempUDFE_DeptIDL);
                 int option = -1;
                 Scanner in = new Scanner(System.in);
                 do {
-                    System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                     System.out.println("Do you want to see full information this employee ?");
                     System.out.println("[1]--> Yes");
                     System.out.println("[0]--> No and exit");
@@ -1141,18 +1137,18 @@ public class EmployeeDao {
                     try {
                         option = Integer.parseInt(in.next());
                     } catch (Exception e) {
-                        System.out.print("-----Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------//---- \n");
+                        System.out.print("-----Warning Message------------------------------------------------------------------------------------------------------------------------------------------------------------//--- \n");
                         System.out.println("Type of data-input is incorrect ,again!!");
                         continue;
                     }
                     if (option < 0 || option > 1) {
-                        System.out.print("-----Warning Message---------------------------------------------------------------------------------------------------------------------------------------------------//---- \n");
+                        System.out.print("-----Warning Message-----------------------------------------------------------------------------------------------------------------------------------------------------------//--- \n");
                         System.out.println("Only select option 0 OR 1");
                         continue;
                     }
                     switch (option) {
                         case 1:
-                            System.out.println("-/EMPLOYEE INFORMATION DETAILS/-------------------------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("-/EMPLOYEE INFORMATION DETAILS/------------------------------------------------------------------------------------------------------------------------------------------------");
                             displayDetailsEmployeeSV(getByEmployeeIDDB(tempUDFE_EmpIDL));
                             break;
                         case 0:
@@ -1169,11 +1165,11 @@ public class EmployeeDao {
 
     //calculate personal tax for employee
     public void calculatePersonalTaxSV() {
-        System.out.println("---------/CALCULATE PERSONAL TAX OF EMPLOYEE/-------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("---------/CALCULATE PERSONAL TAX OF EMPLOYEE/----------------------------------------------------------------------------------------------------------------------------------------------------");
         int option=-1;
         Scanner in = new Scanner(System.in);
         do {
-            System.out.println("---------Suggest Message-------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---------Suggest Message----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Do you remember employee id which you want to search tax ?");
             System.out.println("[1]--> Yes, i remember employee information for finance id");
             System.out.println("[0]--> No, exit menu to see finance id again");
@@ -1196,13 +1192,13 @@ public class EmployeeDao {
                         String tempCase1 = inputEmployeeIDSV();
                         long tempCase1L = Long.parseLong(tempCase1);
                         if (tempCase1 != null&&getByEmployeeIDDB(tempCase1L)!=null) {
-                            System.out.println("------/SEARCH RESULT: EMPLOYEE INFORMATION/-------------------------------------------------------------------------------------------------------------");
+                            System.out.println("------/SEARCH RESULT: EMPLOYEE INFORMATION/----------------------------------------------------------------------------------------------------------------------------------");
                             displayDetailsEmployeeSV(getByEmployeeIDDB(tempCase1L));
                             tempEmp = getByEmployeeIDDB(tempCase1L);///
                             break;
                         }
                         if (tempCase1 != null&&getByEmployeeIDDB(tempCase1L)==null) {
-                            System.out.println("------/SEARCH RESULT/-----------------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("------/SEARCH RESULT/--------------------------------------------------------------------------------------------------------------------------------------------------------");
                             System.out.println("No exist employee with ID as above !!");
                             tempEmp=null;
                             break;
@@ -1210,7 +1206,7 @@ public class EmployeeDao {
                     }
                     int dQty=0;
                     while (true) {
-                        System.out.println("---Suggest Message-------------------------------------------------------------------------------------------------------------------------------------------");
+                        System.out.println("---Suggest Message--------------------------------------------------------------------------------------------------------------------------------------------------------------");
                         String tempQty = inputQuantityDependentPerson();
                         long tempQtyL = Long.parseLong(tempQty);
                         if (tempQty != null) {
@@ -1240,8 +1236,8 @@ public class EmployeeDao {
                         double allBHTax = tempSalary * tempAllBH;
                         double actualSalaryReceverNoAnnual = (tempSalary + 0) - (allPerTaxNoAnnual) - (allBHTax);
                         double actualSalaryReceverHasAnnual = (tempSalary + tempAnnual) - (allPerTaxNoAnnual) - (allBHTax);
-                        System.out.println("---------/PERSONAL TAX OF EMPLOYEE RESULT/--------------------------------------------------------------------------------------------------------//--------");
-                        System.out.println("--/PER MONTH/------/NO ANNUAL/----------------------------------------------------------------------------------------------------------------------//------");
+                        System.out.println("---------/PERSONAL TAX OF EMPLOYEE RESULT/-------------------------------------------------------------------------------------------------------------------------//--------");
+                        System.out.println("--/PER MONTH/------/NO ANNUAL/---------------------------------------------------------------------------------------------------------------------------------------//------");
                         System.out.printf(" [+] Employee [Name = %s, ID= %d] \n", fullname, tempEmp.getEmp_id());
                         System.out.printf(" [+] SalaryIncome = %.2f\n",tempSalary);
                         System.out.printf(" [+] rate BHXH = %.2f\n",rateBHXH);
@@ -1254,7 +1250,7 @@ public class EmployeeDao {
                         System.out.printf(" [+] Dependent person tax reduction = %.2f\n",depentdentTax);
                         System.out.printf(" [+] Actual receive Salary = (SalaryIncome - Personal Tax - All BHXH) = %.2f\n ", actualSalaryReceverNoAnnual);
 
-                        System.out.println("--/ON THE DECEMBER/ ------/HAVE ANNUAL/--------------------------------------------------------------------------------------------------------------//----");
+                        System.out.println("--/ON THE DECEMBER/ ------/HAVE ANNUAL/-------------------------------------------------------------------------------------------------------------------------------//----");
                         System.out.printf(" [+] Employee [Name = %s, ID= %d] \n", fullname, tempEmp.getEmp_id());
                         System.out.printf(" [+] SalaryIncome = %.2f\n",tempSalary);
                         System.out.printf(" [+] Annual = %.2f\n",tempAnnual);
