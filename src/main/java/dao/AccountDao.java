@@ -546,7 +546,7 @@ public class AccountDao {
         do {
             System.out.println("\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//-");
             System.out.println("Please select option in menu as below");
-            System.out.println("[1] --> Delete account by account ID");
+            System.out.println("[1] --> Delete account by account name");
             System.out.println("[2] --> Delete account by account ID");
             System.out.println("[0] --> Exit, choose later");
             System.out.printf("Input Option= ");

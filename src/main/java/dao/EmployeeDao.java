@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -423,9 +424,61 @@ public class EmployeeDao {
 
     //-----------------------SV-----------------------------------
 
+    public void sortByDeptIDSV() {
+        Scanner in = new Scanner(System.in);
+        System.out.printf("Sort department id [increase=1,decrease=0] : ");
+        int temp = Integer.parseInt(in.next());
+        if(temp==0) {
+            System.out.printf("%-4s %-15s %-15s %-10s %-15s %-25s %-20s %-15s %-10s %-7s %-7s\n", "ID", "FullName", "Position", "BOD", "Gender", "Email", "Phone", "HireDate", "EndDate", "FinanceID", "DepartID");
+            getAllDB().stream().sorted(new Comparator<Employee>() {
+                @Override
+                public int compare(Employee o1, Employee o2) {
+                    if (o1.getDept_id() > o2.getDept_id()) {
+                        return -1;
+                    }
+                    if (o1.getDept_id() < o2.getDept_id()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            }).forEach(employee -> displayDetailsEmployeeSVs(employee));
+        }
+        if(temp==1) {
+            System.out.printf("%-4s %-15s %-15s %-10s %-15s %-25s %-20s %-15s %-10s %-7s %-7s\n", "ID", "FullName", "Position", "BOD", "Gender", "Email", "Phone", "HireDate", "EndDate", "FinanceID", "DepartID");
+            getAllDB().stream().sorted(new Comparator<Employee>() {
+                @Override
+                public int compare(Employee o1, Employee o2) {
+                    if (o1.getDept_id() > o2.getDept_id()) {
+                        return 1;
+                    }
+                    if (o1.getDept_id() < o2.getDept_id()) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            }).forEach(employee -> displayDetailsEmployeeSVs(employee));
+        }
+    }
+
     public void displayDetailsEmployeeSV(Employee e) {
         System.out.println("------Result Message------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ");
         System.out.printf("%-4s %-15s %-15s %-10s %-15s %-25s %-20s %-15s %-10s %-7s %-7s\n", "ID", "FullName", "Position", "BOD", "Gender", "Email", "Phone", "HireDate", "EndDate", "FinanceID", "DepartID");
+        System.out.printf("%-4d ", e.getEmp_id());
+        String full_name = e.getFirst_name() + " " + e.getLast_name();
+        System.out.printf("%-15s", full_name);
+        System.out.printf("%-15s", e.getPosition());
+        System.out.printf("%-15s", e.getBirth_of_date());
+        System.out.printf("%-15s", e.getGender());
+        System.out.printf("%-25s", e.getEmail());
+        System.out.printf("%-20s", e.getPhone());
+        System.out.printf("%-15s", e.getHire_date());
+        System.out.printf("%-20s", e.getEnd_date());
+        System.out.printf("%-10d", e.getFin_id());
+        System.out.printf("%-7d ", e.getDept_id());
+        System.out.printf("\n");
+    }
+
+    public void displayDetailsEmployeeSVs(Employee e) {
         System.out.printf("%-4d ", e.getEmp_id());
         String full_name = e.getFirst_name() + " " + e.getLast_name();
         System.out.printf("%-15s", full_name);
@@ -1282,6 +1335,8 @@ public class EmployeeDao {
         System.out.println("[6] --> Update or edit employee information");
         System.out.println("[7] --> Change department of employee");
         System.out.println("[8] --> Delete employee");
+        System.out.println("[9] --> Sort employee by department ID");
+
         System.out.println("[0] --> Exit ");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------//-");
 
@@ -1303,7 +1358,7 @@ public class EmployeeDao {
                 System.out.println("Input data is wrong, again");
                 continue;
             }
-            if (option < 0 || option > 8) {
+            if (option < 0 || option > 9) {
                 System.out.println("--------/Warning Message/---------------------------------------------------------------------------------------------------------------------------------------------------//-");
                 System.out.println("Input option again, out option !!");
                 continue;
@@ -1333,6 +1388,9 @@ public class EmployeeDao {
                 case 8:
                     deleteEmployeeSV();
                     break;
+                case 9:
+                    sortByDeptIDSV();
+                    break;
                 case 0:
                     break;
             }
@@ -1347,6 +1405,7 @@ public class EmployeeDao {
         System.out.println("[2] --> Get employee information by ID");
         System.out.println("[3] --> Search employee more options ");
         System.out.println("[4] --> Calculate Personal Tax for employee");
+        System.out.println("[5] --> Sort employee by department ID");
 
         System.out.println("[0] --> Exit ");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------//-");
@@ -1368,7 +1427,7 @@ public class EmployeeDao {
                 System.out.println("Input data is wrong, again");
                 continue;
             }
-            if (option < 0 || option > 4) {
+            if (option < 0 || option > 5) {
                 System.out.println("--------/Warning Message/---------------------------------------------------------------------------------------------------------------------------------------------------//-");
                 System.out.println("Input option again, out option !!");
                 continue;
@@ -1385,6 +1444,9 @@ public class EmployeeDao {
                     break;
                 case 4:
                     calculatePersonalTaxSV(); ///?
+                    break;
+                case 5:
+                    sortByDeptIDSV();
                     break;
                 case 0:
                     break;

@@ -20,7 +20,7 @@ public class Application {
     private static BaseDao baseDao = new BaseDao();
 
     private static void showMenuUS(){
-        System.out.println("\n-|HOME|--/MANAGER EMPLOYEE SYSTEM/--------|FOR USER MODE|---------------------------------------------------------------------------------------------------------------------//-");
+        System.out.printf("\n-|HOME|--/MANAGER EMPLOYEE SYSTEM/--------|FOR USER MODE|---|account name: %s|------------------------------------------------------------------------------------------------------------------//-\n",tempAcc);
         System.out.println("[1] --> Manage Department");
         System.out.println("[2] --> Manage Employee");
         System.out.println("[3] --> Manage Finance");
@@ -30,9 +30,9 @@ public class Application {
         System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//-");
 
     }
-
+     static String tempAcc="";
     private static void showMenuAD(){
-        System.out.println("\n-|HOME|--/MANAGER EMPLOYEE SYSTEM/--------|FOR ADMIN MODE|---------------------------------------------------------------------------------------------------------------------//-");
+        System.out.printf("\n-|HOME|--/MANAGER EMPLOYEE SYSTEM/--------|FOR ADMIN MODE|----|account name: %s|-----------------------------------------------------------------------------------------------------------------//-\n",tempAcc);
         System.out.println("[1] --> Manage Department");
         System.out.println("[2] --> Manage Employee");
         System.out.println("[3] --> Manage Finance");
@@ -56,6 +56,7 @@ public class Application {
                 System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------//-");
                 // check the resul of login (success or not )
                 if (isLoginSuccess = accountDao.login(username, password)) {
+                    tempAcc=username;
                     mode=accountDao.getByUserNameAndPasswordDB(username, password).getAccount_level();
                     countLoginFailure=0;
                     break;
