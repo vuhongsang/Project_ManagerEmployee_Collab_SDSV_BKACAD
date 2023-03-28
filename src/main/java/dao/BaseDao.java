@@ -68,7 +68,6 @@ public class BaseDao {
             return false;
         }
     }
-
     public boolean hasOnlyNumberAndOneDot(String s) {
         final String regex = "^\\d+(\\.\\d)?$";
         if (s.isEmpty()) {
